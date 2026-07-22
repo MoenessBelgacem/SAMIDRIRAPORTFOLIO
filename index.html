@@ -253,19 +253,19 @@ body.is-loading{
 <div class="slice-placeholder" style="top:42000px;height:3500px"></div>
 <div class="slice-placeholder" style="top:45500px;height:1768px"></div>
 <img class="slice" src="images/slice-00.webp" style="top:0px;height:3500px" width="1920" height="3500" loading="eager" fetchpriority="high" alt="" draggable="false">
-<img class="slice" src="images/slice-01.webp" style="top:3500px;height:3500px" width="1920" height="3500" loading="lazy" alt="" draggable="false">
-<img class="slice" src="images/slice-02.webp" style="top:7000px;height:3500px" width="1920" height="3500" loading="lazy" alt="" draggable="false">
-<img class="slice" src="images/slice-03.webp" style="top:10500px;height:3500px" width="1920" height="3500" loading="lazy" alt="" draggable="false">
-<img class="slice" src="images/slice-04.webp" style="top:14000px;height:3500px" width="1920" height="3500" loading="lazy" alt="" draggable="false">
-<img class="slice" src="images/slice-05.webp" style="top:17500px;height:3500px" width="1920" height="3500" loading="lazy" alt="" draggable="false">
-<img class="slice" src="images/slice-06.webp" style="top:21000px;height:3500px" width="1920" height="3500" loading="lazy" alt="" draggable="false">
-<img class="slice" src="images/slice-07.webp" style="top:24500px;height:3500px" width="1920" height="3500" loading="lazy" alt="" draggable="false">
-<img class="slice" src="images/slice-08.webp" style="top:28000px;height:3500px" width="1920" height="3500" loading="lazy" alt="" draggable="false">
-<img class="slice" src="images/slice-09.webp" style="top:31500px;height:3500px" width="1920" height="3500" loading="lazy" alt="" draggable="false">
-<img class="slice" src="images/slice-10.webp" style="top:35000px;height:3500px" width="1920" height="3500" loading="lazy" alt="" draggable="false">
-<img class="slice" src="images/slice-11.webp" style="top:38500px;height:3500px" width="1920" height="3500" loading="lazy" alt="" draggable="false">
-<img class="slice" src="images/slice-12.webp" style="top:42000px;height:3500px" width="1920" height="3500" loading="lazy" alt="" draggable="false">
-<img class="slice" src="images/slice-13.webp" style="top:45500px;height:1768px" width="1920" height="1768" loading="lazy" alt="" draggable="false">
+<img class="slice" src="images/slice-01.webp" style="top:3500px;height:3500px" width="1920" height="3500" loading="eager" alt="" draggable="false">
+<img class="slice" src="images/slice-02.webp" style="top:7000px;height:3500px" width="1920" height="3500" loading="eager" alt="" draggable="false">
+<img class="slice" src="images/slice-03.webp" style="top:10500px;height:3500px" width="1920" height="3500" loading="eager" alt="" draggable="false">
+<img class="slice" src="images/slice-04.webp" style="top:14000px;height:3500px" width="1920" height="3500" loading="eager" alt="" draggable="false">
+<img class="slice" src="images/slice-05.webp" style="top:17500px;height:3500px" width="1920" height="3500" loading="eager" alt="" draggable="false">
+<img class="slice" src="images/slice-06.webp" style="top:21000px;height:3500px" width="1920" height="3500" loading="eager" alt="" draggable="false">
+<img class="slice" src="images/slice-07.webp" style="top:24500px;height:3500px" width="1920" height="3500" loading="eager" alt="" draggable="false">
+<img class="slice" src="images/slice-08.webp" style="top:28000px;height:3500px" width="1920" height="3500" loading="eager" alt="" draggable="false">
+<img class="slice" src="images/slice-09.webp" style="top:31500px;height:3500px" width="1920" height="3500" loading="eager" alt="" draggable="false">
+<img class="slice" src="images/slice-10.webp" style="top:35000px;height:3500px" width="1920" height="3500" loading="eager" alt="" draggable="false">
+<img class="slice" src="images/slice-11.webp" style="top:38500px;height:3500px" width="1920" height="3500" loading="eager" alt="" draggable="false">
+<img class="slice" src="images/slice-12.webp" style="top:42000px;height:3500px" width="1920" height="3500" loading="eager" alt="" draggable="false">
+<img class="slice" src="images/slice-13.webp" style="top:45500px;height:1768px" width="1920" height="1768" loading="eager" alt="" draggable="false">
 <a class="nav-hit" href="#branding" data-target="branding" style="left:783.0px;top:71.5px;font-size:30.0px;font-weight:400;font-family:'Urbanist',sans-serif;">Branding </a>
 <a class="nav-hit" href="#social-media" data-target="social-media" style="left:1018.0px;top:71.5px;font-size:30.0px;font-weight:400;font-family:'Urbanist',sans-serif;">Social Media</a>
 <a class="nav-hit" href="#print" data-target="print" style="left:1306.0px;top:71.5px;font-size:30.0px;font-weight:400;font-family:'Urbanist',sans-serif;">Print</a>
@@ -303,7 +303,7 @@ body.is-loading{
   var slices   = document.querySelectorAll('.slice');
   var total    = slices.length;
   var loaded   = 0;
-  var heroReady = false;
+  var dismissed = false;
 
   // Lock scroll during load
   document.body.classList.add('is-loading');
@@ -314,16 +314,14 @@ body.is-loading{
     var pct = Math.round((loaded / total) * 100);
     barFill.style.width = pct + '%';
 
-    // Dismiss overlay once the first (hero) slice is ready
-    if(img === slices[0] && !heroReady){
-      heroReady = true;
-      dismissLoader();
-    }
-    // Fallback: dismiss if all loaded
-    if(loaded >= total && !heroReady) dismissLoader();
+    // Dismiss only when ALL slices are loaded
+    if(loaded >= total) dismissLoader();
   }
 
   function dismissLoader(){
+    if(dismissed) return;
+    dismissed = true;
+    barFill.style.width = '100%';
     overlay.classList.add('hidden');
     document.body.classList.remove('is-loading');
     // Remove from DOM after animation
@@ -339,10 +337,10 @@ body.is-loading{
     }
   });
 
-  // Safety timeout — dismiss after 8s max even if hero not loaded
+  // Safety timeout — dismiss after 120s max for very slow connections
   setTimeout(function(){
-    if(!heroReady) dismissLoader();
-  }, 8000);
+    if(!dismissed) dismissLoader();
+  }, 120000);
 
   /* ── Navigation ── */
   var sections = {
